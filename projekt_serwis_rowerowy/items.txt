@@ -1,0 +1,23 @@
+10120
+PRODUCT
+frame;119.990000;casual bike frame;4
+BIKE
+giant;999.990000;great mountain bike;universal bike;27.000000;2
+BIKE
+giant2;999.990000;great mountain bike;universal bike;27.000000;2
+SERVICE
+bike repair;100.000000;standard bike renovation;2
+SERVICE
+bike repair2;100.000000;standard bike renovation;2
+EVENT
+suepr event;super mega event;10;10;2019;0
+EVENT
+siema;event mega zapraszam;10;10;2020;1
+EVENT
+siema2;event mega zapraszam2;10;10;2020;1
+EVENT
+siema3;event mega zapraszam3;10;10;2020;1
+EVENT
+siema4;event mega zapraszam4;10;10;2020;1
+EVENT
+super event;mega event;10;10;2030;1

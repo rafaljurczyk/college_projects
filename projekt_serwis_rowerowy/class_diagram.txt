@@ -1,0 +1,218 @@
+class_diagram.txt
+
+enum Type{ mountain, city, universal };
+
+enum EmployeePosition { warehouseman, adviser, service_technician, manager };
+
+std::string TypeToString(const Type type);
+
+std::string EmployeePositionToString(const EmployeePosition employee_position);
+
+EmployeePosition StringToEmployeePosition(const std::string& employee_position);
+
+Type StringToType(const std::string& type);
+
+class Date{
+    int day;
+    int month;
+    int year;
+public:
+    Date();
+    Date(const int& day, const int& month, const int& year);
+    bool compare_dates(Date date);
+    int get_year() const;
+    int get_month() const;
+    int get_day() const;
+    ~Date();
+};
+
+class Basic_Product{
+protected:
+    std::string name;
+    double price;
+    double basic_price;
+    std::string description;
+public:
+    Basic_Product(const std::string& name, const double price, const std::string& description);
+    virtual void show_full_name() = 0;
+    std::string get_name();
+    double get_price() const;
+    std::string get_description() const;
+    ~Basic_Product();
+};
+
+class Product : public Basic_Product{
+    int quantity;
+public:
+    Product(const std::string& name, const double price, const std::string& description);
+    Product(const std::string& name, const double price, const std::string& description, const int quantity);
+    virtual void show_full_name();
+    void add_quantity(int amount);
+    void subtract_quantity(int amount);
+    int get_quantity() const;
+    ~Product();
+};
+
+class Bike : public Product{
+    Type type;
+    double wheel_size;
+public:
+    Bike(const std::string& name, const double price, const std::string& description, const Type type, const double wheel_size);
+    Bike(const std::string& name, const double price, const std::string& description, const Type type, const double wheel_size, const int quantity);
+    virtual void show_full_name() override;
+    double get_wheel_size() const;
+    Type get_bike_type() const;
+    ~Bike();
+};
+
+class Service : public Basic_Product{
+    int required_days;
+public:
+    Service(const std::string& name, const double price, const std::string& description, const int required_days);
+    virtual void show_full_name() override;
+    bool compare(Service* service);
+    int get_required_days() const;
+    ~Service();
+};
+
+class Person{
+    std::string name;
+    Date registration_date;
+    std::vector<std::string> ordered_services;
+public:
+    Person(std::string name);
+    Person(const std::string& name, Date& date);
+    void buy_a_product_or_bike(Storage& storage);
+    void order_a_service(Storage& storage);
+    std::string get_name();
+    void show_registration_date();
+    void show_ordered_services();
+    Date get_registration_date();
+    virtual void add_event(Storage& storage) = 0;
+    ~Person();
+};
+
+class Client : public Person{
+    std::string login;
+    std::string password;
+public:
+    Client();
+    Client(const std::string& name, const std::string& login, const std::string& password);
+    Client(const std::string& name, const std::string& login, const std::string& password, Date& date);
+    std::string get_login();
+    std::string get_password();
+    /*The Client can add event using this method, but the event still have to be confirmed by Employee to be displayed in event lists.*/
+    virtual void add_event(Storage& storage) override;
+    
+};
+
+class Employee : public Person{
+    std::string login;
+    std::string password;
+    EmployeePosition employee_position;
+    double salary;
+
+public:
+    Employee();
+    Employee(const std::string& name, const std::string& login, const std::string& password, const double salary, const EmployeePosition employee_position);
+    EmployeePosition get_employee_position() const;
+    double get_salary() const;
+    void approve_event(Storage& storage);
+    std::string get_login() const;
+    std::string get_password() const;
+    virtual void add_event(Storage& storage) override;
+    ~Employee();
+};
+
+class Manager : public Employee{
+public:
+    Manager();
+    Manager(const std::string& name, const std::string& login, const std::string& password, double salary, EmployeePosition employee_position);
+    void fire_staff_member(std::vector<Employee*>& employees);
+    void show_employee_list(std::vector<Employee*>& employees) const;
+    void hire_employee(std::vector<Employee*>& employees);
+    double pay_salary(std::vector<Employee*>& employees);
+};
+
+class PeopleDataBase{
+    std::vector<Client*> clients;
+    std::vector<Employee*> employees;
+    std::vector<Manager*> managers;
+public:
+    /*Add new client to database*/
+    void add_client();
+    void show_clients() const;
+    /*Add new employee to database*/
+    void add_employee(Employee* employee);
+    void show_employee_list() const;
+    /*Add new manager to database. I made it that it is only one manager in this store but if you want expand it everything is set up.*/
+    void add_manager(Manager* manager);
+    void show_managers() const;
+    std::vector<Client*> get_clients();
+    std::vector<Employee*> get_employees();
+    std::vector<Manager*> get_managers();
+    /*Display login form for client. If we exit it without signing in, it return Anonymous User which equals to displaying not logged Client UI.*/
+    Client* client_login_form(Client* client);
+    /*Display login form for employee. If we exit it without signing in, it return Anonymous User which equals to displaying not logged Client UI.*/
+    Employee* employee_login_form();
+    /*Display login form for manager. If we exit it without signing in, it return Anonymous User which equals to displaying not logged Client UI.*/
+    Manager* manager_login_form();
+    /*load every client/employee/manager to our class that represent the databse*/
+    void load_users();
+    /*save every client/employee/manager in our txt file*/
+    void save_users();
+    ~PeopleDataBase();
+};
+
+class Storage{
+    std::vector<Product*> products;
+    std::vector<Bike*> bikes;
+    std::vector<Service*> services;
+    std::vector<Event*> events;
+    //EventList event_list;
+    double earnings;
+public:
+    //void add_event(Event* event);
+    //void show_events();
+    //void show_unapproved_events();
+    //void approve_event(std::string name);
+    void show_storage() const;
+    void show_services() const;
+    //
+    void add_event(Event* event);
+    void show_events();
+    void show_unapproved_events();
+    void approve_event(std::string name);
+    //void delete_event(std::string name);
+    //void update_events();
+    //
+    /*we can check how much money our store earned*/
+    double get_balance() const;
+    /*every time somebody buys something our we have to pay salary to our employee we can do it with this method*/
+    void set_balance(double ammount);
+    /*if we want to buy product/bike this method checks if it's in our store and if it is it buys it (subtract quantity and add it's price to our balance)*/
+    void check_in_storage(std::string& item);
+    /*if we want to order service this method checks if it's in our store and if it is it orders it (adding to our ordered servces list and add it's price to out balance)*/
+    bool order_a_service(std::string& service);
+    /*load whole products/bikes/services database*/
+    void load_storage();
+    /*save whole products/bikes/services database*/
+    void save_storage();
+    
+    ~Storage();
+};
+
+class Interface{
+    Storage* storage;
+    PeopleDataBase* people_database;
+    int choice;
+public:
+    void load_interface();
+    void show_client_interface(Client* client);
+    void show_logged_client_interface(Client *client);
+    void show_employee_interface(Employee* employee);
+    void show_manager_interface(Manager* manager);
+
+    Interface();
+    ~Interface();
+};

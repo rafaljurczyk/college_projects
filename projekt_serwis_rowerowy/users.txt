@@ -1,0 +1,12 @@
+CLIENT
+rafal;rafal;12345;2;2;2019
+CLIENT
+rafi;rafi;12345;3;11;2020
+CLIENT
+super;ralf;12345;3;11;2020
+CLIENT
+rafal jurczyk;rafal jurczyk;12345;3;11;2020
+EMPLOYEE
+bobby;bobby;12345;3;11;2020;2000.000000;adviser
+EMPLOYEE
+chad;chad;12345;3;11;2020;5000.000000;manager

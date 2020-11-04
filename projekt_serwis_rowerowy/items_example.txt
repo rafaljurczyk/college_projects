@@ -1,0 +1,6 @@
+PRODUCT
+frame;119.99;casual bike frame;5
+BIKE
+giant;999.99;great mountain bike;mountain;27;2
+SERVICE
+bike repair;100;standard bike renovation;2
